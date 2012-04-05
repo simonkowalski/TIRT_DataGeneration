@@ -107,6 +107,7 @@ public class Window extends JFrame {
         drawPanel = new DrawPanel(this);
         for(MobilityModel m : drawPanel.getModels()) {
             m.start();
+            m.pauseModel();
         }
         
         getContentPane().add(drawPanel);

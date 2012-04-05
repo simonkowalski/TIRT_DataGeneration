@@ -23,7 +23,7 @@ public abstract class MobilityModel extends Thread {
     public MobilityModel(Window parent, int entitiesCount) {
         this.parent = parent;
         time = 0;
-        dt = 1000;
+        dt = 100;
         
         entities = new ArrayList<>();
         Random rand = new Random();
@@ -57,7 +57,9 @@ public abstract class MobilityModel extends Thread {
             if(e.getNextStep() == null) {
                 calculateNextStep(e);
             }
+            e.walk(time);
         }
+        time += 0.05;
     }
 
     /**

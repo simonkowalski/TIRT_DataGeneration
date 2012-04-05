@@ -41,13 +41,13 @@ public class DrawPanel extends JPanel {
         colors[7] = new Color(255, 255, 255, 128);
         
         models = new MobilityModel[3];
-        models[Window.RANDOM_WALK] = new ExampleModel(parent, 10);
-        models[Window.LEVY_WALK] = new ExampleModel(parent, 10);
-        models[Window.TEN_TRZECI_WALK] = new ExampleModel(parent, 10);
+        models[Window.RANDOM_WALK] = new ExampleModel(parent, 3);
+        models[Window.LEVY_WALK] = new ExampleModel(parent, 3);
+        models[Window.TEN_TRZECI_WALK] = new ExampleModel(parent, 3);
         
         selected = Window.RANDOM_WALK;
         
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.WHITE);
     }
     
     @Override
@@ -60,14 +60,18 @@ public class DrawPanel extends JPanel {
                 gDC.setColor(colors[i%colors.length]);
                 
                 LinkedList<Position> path = entities.get(i).getWalkedPath();
+        //System.out.println("path " + path.size());
                 ListIterator<Position> iter = path.listIterator();
                 Position p1 = iter.next();
+                gDC.drawRect((int) p1.getX()*5 - 1, (int) p1.getY()*5 - 1, 2, 2);
                 Position p2;
                 
                 while(iter.hasNext()) {
                     p2 = iter.next();
                     
-                    gDC.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+                    gDC.drawLine((int) p1.getX()*5, (int) p1.getY()*5, (int) p2.getX()*5, (int) p2.getY()*5);
+                    gDC.drawRect((int) p2.getX()*5 - 1, (int) p2.getY()*5 - 1, 2, 2);
+                    p1 = p2;
                 }
             }
         }

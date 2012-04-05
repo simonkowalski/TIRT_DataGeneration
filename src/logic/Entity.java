@@ -33,7 +33,7 @@ public class Entity {
      */
     public void walk(double t) {
         if(nextStep != null) {
-            while(nextStep.getT() <= t) {
+            if(nextStep.getT() <= t) {
                 currentPosition = new Position(nextStep.getX(), nextStep.getY());
                 walkedPath.add(getCurrentPosition());
                 getPreviousSteps().add(new Step(0, nextStep.getX(), nextStep.getY()));
