@@ -35,7 +35,7 @@ public class Entity {
         if(nextStep != null) {
             if(nextStep.getT() <= t) {
                 currentPosition = new Position(nextStep.getX(), nextStep.getY());
-                walkedPath.add(getCurrentPosition());
+                walkedPath.add(currentPosition);
                 getPreviousSteps().add(new Step(0, nextStep.getX(), nextStep.getY()));
                 nextStep = null;
             }

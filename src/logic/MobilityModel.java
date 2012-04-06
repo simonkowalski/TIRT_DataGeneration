@@ -13,6 +13,7 @@ public abstract class MobilityModel extends Thread {
     protected ArrayList<Entity> entities;
     protected double time;
     private int dt;
+    private int entitiesCount;
     protected boolean paused;
     
     /**
@@ -24,6 +25,7 @@ public abstract class MobilityModel extends Thread {
         this.parent = parent;
         time = 0;
         dt = 100;
+        this.entitiesCount = entitiesCount;
         
         entities = new ArrayList<>();
         Random rand = new Random();
@@ -59,7 +61,7 @@ public abstract class MobilityModel extends Thread {
             }
             e.walk(time);
         }
-        time += 0.05;
+        time += 0.01;
     }
 
     /**
@@ -75,10 +77,36 @@ public abstract class MobilityModel extends Thread {
      * Resets the model.
      */
     public void clear() {
+        pauseModel();
         Random rand = new Random();
         
-        for(Entity e : entities) {
-            e = new Entity(rand.nextDouble()*100, rand.nextDouble()*100);
+        entities = new ArrayList<>();
+        
+        for(int i=0; i<entitiesCount; i++) {
+            Entity e = new Entity(rand.nextDouble()*100, rand.nextDouble()*100);
+            calculateNextStep(e);
+            entities.add(e);
+        }
+    }
+
+    public void setSpeed(int speed) {
+        dt = 1000/speed;
+    }
+
+    public void setEntitiesCount(int entitiesCount) {
+        if(entitiesCount > entities.size()) {
+            Random rand = new Random();
+            int entitiesToAdd = entitiesCount - entities.size();
+            
+            for(int i=0; i<entitiesToAdd; i++) {
+                entities.add(new Entity(rand.nextDouble()*100, rand.nextDouble()*100));
+            }
+        } else if(entitiesCount < entities.size()) {
+            int entitiesToDel = entities.size() - entitiesCount;
+            
+            for(int i=0; i<entitiesToDel; i++) {
+                entities.remove(entities.size()-1);
+            }
         }
     }
     
