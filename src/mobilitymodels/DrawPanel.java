@@ -33,6 +33,7 @@ public class DrawPanel extends JPanel {
         this.parent = parent;
         
         colors = new Color[8];
+        colors[0] = new Color(0, 0, 0);
         colors[1] = new Color(255, 0, 0);
         colors[2] = new Color(0, 255, 0);
         colors[3] = new Color(0, 0, 255);
@@ -40,12 +41,11 @@ public class DrawPanel extends JPanel {
         colors[5] = new Color(0, 255, 255);
         colors[6] = new Color(255, 0, 255);
         colors[7] = new Color(255, 255, 255);
-        colors[0] = new Color(0, 0, 0);
         
         models = new MobilityModel[3];
-        models[Window.RANDOM_WALK] = new ExampleModel(parent, 8);
-        models[Window.LEVY_WALK] = new ExampleModel(parent, 8);
-        models[Window.TEN_TRZECI_WALK] = new ExampleModel(parent, 8);
+        models[Window.RANDOM_WALK] = new ExampleModel(parent, 4);
+        models[Window.LEVY_WALK] = new ExampleModel(parent, 4);
+        models[Window.TEN_TRZECI_WALK] = new ExampleModel(parent, 4);
         
         selected = Window.RANDOM_WALK;
         
@@ -61,6 +61,12 @@ public class DrawPanel extends JPanel {
         g2D.setStroke(new BasicStroke(2));
         
         if(getModels() != null && getModels().length > selected && getModels()[selected] != null) {
+            boolean paused = getModels()[selected].isPaused();
+            if(!paused) {
+                getModels()[selected].pauseModel();
+            }
+        
+            double time = getModels()[selected].getTime();
             ArrayList<Entity> entities = getModels()[selected].getEntities();
             for(int i=0; i<entities.size(); i++) {
                 g2D.setColor(colors[i%colors.length]);
@@ -79,6 +85,15 @@ public class DrawPanel extends JPanel {
                     g2D.drawRect((int) p2.getX()*5 - 1, (int) p2.getY()*5 - 1, 2, 2);
                     p1 = p2;
                 }
+            }
+            g2D.setColor(new Color(0, 0, 0, 96));
+            g2D.fillRect(3, 3, 42, 15);
+            g2D.setColor(Color.WHITE);
+            String t = Double.toString(time);
+            g2D.drawString(t.substring(0, Math.min(t.length(), 6)), 5, 15);
+            
+            if(!paused) {
+                getModels()[selected].resumeModel();
             }
         }
     }

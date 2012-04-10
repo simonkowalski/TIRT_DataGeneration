@@ -16,6 +16,6 @@ public class ExampleModel extends MobilityModel {
     protected void calculateNextStep(Entity e) {
         Random rand = new Random();
         
-        e.setNextStep(new Step(time+rand.nextDouble(), rand.nextDouble()*100, rand.nextDouble()*100));
+        e.setNextStep(new Step(getTime()+rand.nextDouble(), rand.nextDouble()*100, rand.nextDouble()*100));
     }
 }

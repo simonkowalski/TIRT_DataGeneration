@@ -76,7 +76,7 @@ public class Window extends JFrame {
         
         leftPanel.add(new JLabel("      Speed      "));
         
-        speedSlider = new JSlider(JSlider.HORIZONTAL, 5, 100, 50);
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 5, 120, 40);
         speedSlider.setPreferredSize(new Dimension(100, 20));
         speedSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -148,7 +148,6 @@ public class Window extends JFrame {
                     @Override
                     public void run() {
                         if(drawPanel != null) {
-                            System.out.println("pause / resume");
                             drawPanel.pauseResume();
                             startStopButton.setText(drawPanel.getModels()[modelSelection.getSelectedIndex()].isPaused() ? "Start" : "Stop");
                         }
@@ -171,6 +170,7 @@ public class Window extends JFrame {
                             drawPanel.getModels()[modelSelection.getSelectedIndex()].clear();
                         }
                         startStopButton.setText("Start");
+                        entitiesCounter.setText(Integer.toString(drawPanel.getModels()[modelSelection.getSelectedIndex()].getEntities().size()));
                         repaint();
                     }
                 });

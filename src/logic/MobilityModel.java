@@ -11,7 +11,7 @@ import mobilitymodels.Window;
 public abstract class MobilityModel extends Thread {
     protected Window parent;
     protected ArrayList<Entity> entities;
-    protected double time;
+    private double time;
     private int dt;
     private int entitiesCount;
     protected boolean paused;
@@ -59,7 +59,7 @@ public abstract class MobilityModel extends Thread {
             if(e.getNextStep() == null) {
                 calculateNextStep(e);
             }
-            e.walk(time);
+            e.walk(getTime());
         }
         time += 0.01;
     }
@@ -79,7 +79,7 @@ public abstract class MobilityModel extends Thread {
     public void clear() {
         pauseModel();
         Random rand = new Random();
-        
+        time = 0;
         entities = new ArrayList<>();
         
         for(int i=0; i<entitiesCount; i++) {
@@ -87,6 +87,7 @@ public abstract class MobilityModel extends Thread {
             calculateNextStep(e);
             entities.add(e);
         }
+        
     }
 
     public void setSpeed(int speed) {
@@ -108,6 +109,7 @@ public abstract class MobilityModel extends Thread {
                 entities.remove(entities.size()-1);
             }
         }
+        this.entitiesCount = entitiesCount;
     }
     
     /**
@@ -147,5 +149,12 @@ public abstract class MobilityModel extends Thread {
      */
     public void setDt(int dt) {
         this.dt = dt;
+    }
+
+    /**
+     * @return the time
+     */
+    public double getTime() {
+        return time;
     }
 }
