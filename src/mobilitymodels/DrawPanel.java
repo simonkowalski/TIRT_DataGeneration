@@ -1,18 +1,14 @@
 package mobilitymodels;
 
 import java.awt.BasicStroke;
-import logic.MobilityModel;
-import logic.Position;
-import logic.ExampleModel;
-import logic.Entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.JPanel;
+import logic.*;
 
 /**
  * @author Tomasz 'TC' Klimek
@@ -20,7 +16,6 @@ import javax.swing.JPanel;
 public class DrawPanel extends JPanel {
     private Color[] colors;
     
-    private Window parent;
     private MobilityModel[] models;
     private int selected;
     
@@ -30,7 +25,6 @@ public class DrawPanel extends JPanel {
      * @param parent Parent Window object
      */
     public DrawPanel(Window parent) {
-        this.parent = parent;
         
         colors = new Color[8];
         colors[1] = new Color(255, 0, 0);
@@ -43,9 +37,9 @@ public class DrawPanel extends JPanel {
         colors[0] = new Color(0, 0, 0);
         
         models = new MobilityModel[3];
-        models[Window.RANDOM_WALK] = new ExampleModel(parent, 8);
-        models[Window.LEVY_WALK] = new ExampleModel(parent, 8);
-        models[Window.TEN_TRZECI_WALK] = new ExampleModel(parent, 8);
+        models[Window.RANDOM_WALK] = new RandomWalk(parent, 8);
+        models[Window.LEVY_WALK] = new LevyWalk(parent, 8);
+        models[Window.SLAW] = new RandomWalk(parent, 8);
         
         selected = Window.RANDOM_WALK;
         
@@ -60,8 +54,8 @@ public class DrawPanel extends JPanel {
         g2D.drawRect(0, 0, 500, 500);
         g2D.setStroke(new BasicStroke(2));
         
-        if(getModels() != null && getModels().length > selected && getModels()[selected] != null) {
-            ArrayList<Entity> entities = getModels()[selected].getEntities();
+        if(getModels() != null && getModels().length > selected && currentModel() != null) {
+            ArrayList<Entity> entities = currentModel().getEntities();
             for(int i=0; i<entities.size(); i++) {
                 g2D.setColor(colors[i%colors.length]);
                 
@@ -84,11 +78,15 @@ public class DrawPanel extends JPanel {
     }
     
     public void pauseResume() {
-        if(!getModels()[selected].isPaused()) {
-            getModels()[selected].pauseModel();
+        if(currentModel().isPaused()) {
+            currentModel().resumeModel();
         } else {
-            getModels()[selected].resumeModel();
+            currentModel().pauseModel();
         }
+    }
+
+    private MobilityModel currentModel() {
+        return models[selected];
     }
     
     public int getSelected() {
@@ -96,7 +94,7 @@ public class DrawPanel extends JPanel {
     }
     
     public void setSelected(int selected) {
-        getModels()[this.selected].pauseModel();
+        currentModel().pauseModel();
         this.selected = selected;
     }
 
