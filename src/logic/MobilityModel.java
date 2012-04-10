@@ -1,6 +1,5 @@
 package logic;
 
-import logic.Entity;
 import java.util.ArrayList;
 import java.util.Random;
 import mobilitymodels.Window;
@@ -11,7 +10,7 @@ import mobilitymodels.Window;
 public abstract class MobilityModel extends Thread {
     protected Window parent;
     protected ArrayList<Entity> entities;
-    private double time;
+    protected double time;
     private int dt;
     private int entitiesCount;
     protected boolean paused;
@@ -69,9 +68,7 @@ public abstract class MobilityModel extends Thread {
      * 
      * @param e the Entity object
      */
-    protected void calculateNextStep(Entity e) {
-        // to implement
-    }
+    public abstract void calculateNextStep(Entity e);
     
     /**
      * Resets the model.
