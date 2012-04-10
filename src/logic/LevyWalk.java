@@ -18,19 +18,19 @@ public class LevyWalk extends MobilityModel {
 
     @Override
     public void calculateNextStep(Entity e) {
-        double next = rand.nextGaussian() * 5;
+        double distance = rand.nextGaussian() * 5;
         int angle = rand.nextInt(360);
         double currentX = e.getCurrentPosition().getX();
         double currentY = e.getCurrentPosition().getY();
         
         double theta = Math.toRadians(angle);
-        double newX = currentX + next*Math.cos(theta);
-        double newY = currentY + next*Math.sin(theta);
+        double newX = currentX + distance*Math.cos(theta);
+        double newY = currentY + distance*Math.sin(theta);
         
         if(newX > 100) newX = 100;
         if(newX < 0) newX = 0;
         if(newY > 100) newY = 100;
         if(newY < 0) newY = 0;
-        e.setNextStep(new Step(time+1, newX, newY));
+        e.setNextStep(new Step(time+rand.nextDouble(), newX, newY));
     }
 } 

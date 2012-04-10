@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import javax.swing.JPanel;
 import logic.*;
@@ -54,26 +55,26 @@ public class DrawPanel extends JPanel {
         g2D.drawRect(0, 0, 500, 500);
         g2D.setStroke(new BasicStroke(2));
         
-        if(getModels() != null && getModels().length > selected && getModels()[selected] != null) {
-            boolean paused = getModels()[selected].isPaused();
+        if(getModels() != null && getModels().length > selected && getCurrentModel() != null) {
+            boolean paused = getCurrentModel().isPaused();
             if(!paused) {
-                getModels()[selected].pauseModel();
+                getCurrentModel().pauseModel();
             }
         
-            double time = getModels()[selected].getTime();
-            ArrayList<Entity> entities = getModels()[selected].getEntities();
+            double time = getCurrentModel().getTime();
+            List<Entity> entities = getCurrentModel().getEntities();
             for(int i=0; i<entities.size(); i++) {
                 g2D.setColor(colors[i%colors.length]);
                 
                 LinkedList<Position> path = entities.get(i).getWalkedPath();
                 ListIterator<Position> iter = path.listIterator();
                 Position p1 = iter.next();
+                
                 g2D.drawRect((int) p1.getX()*5 - 1, (int) p1.getY()*5 - 1, 2, 2);
                 g2D.fillRect((int) p1.getX()*5 - 1, (int) p1.getY()*5 - 1, 2, 2);
-                Position p2 = null;
                 
                 while(iter.hasNext()) {
-                    p2 = iter.next();
+                    Position p2 = iter.next();
                     
                     g2D.drawLine((int) p1.getX()*5, (int) p1.getY()*5, (int) p2.getX()*5, (int) p2.getY()*5);
                     g2D.drawRect((int) p2.getX()*5 - 1, (int) p2.getY()*5 - 1, 2, 2);
@@ -87,20 +88,20 @@ public class DrawPanel extends JPanel {
             g2D.drawString(t.substring(0, Math.min(t.length(), 6)), 5, 15);
             
             if(!paused) {
-                getModels()[selected].resumeModel();
+                getCurrentModel().resumeModel();
             }
         }
     }
     
     public void pauseResume() {
-        if(currentModel().isPaused()) {
-            currentModel().resumeModel();
+        if(getCurrentModel().isPaused()) {
+            getCurrentModel().resumeModel();
         } else {
-            currentModel().pauseModel();
+            getCurrentModel().pauseModel();
         }
     }
 
-    private MobilityModel currentModel() {
+    private MobilityModel getCurrentModel() {
         return models[selected];
     }
     
@@ -109,7 +110,7 @@ public class DrawPanel extends JPanel {
     }
     
     public void setSelected(int selected) {
-        currentModel().pauseModel();
+        getCurrentModel().pauseModel();
         this.selected = selected;
     }
 
