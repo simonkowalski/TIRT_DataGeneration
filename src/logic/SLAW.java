@@ -22,7 +22,7 @@ public class SLAW extends MobilityModel{
     private double alpha;
     public SLAW(Window window, int entitiesCount) {
         super(window, entitiesCount);
-        entities = Collections.synchronizedList(new ArrayList<Entity>());
+        entities = new ArrayList<>();
         rand = new Random();
         generateWaypoints();
 
@@ -40,7 +40,7 @@ public class SLAW extends MobilityModel{
         pauseModel();
         Random rand = new Random();
         time = 0;
-        entities = new ArrayList<Entity>();
+        entities = new ArrayList<>();
 
         for(int i=0; i<entitiesCount; i++) {
             Entity e = createEntity();
@@ -75,12 +75,12 @@ public class SLAW extends MobilityModel{
         //what to do with visited waypoints? O.o
         //Might previous vertex be visited again?
 
-        ArrayList<Double> distances = new ArrayList<Double>();
+        ArrayList<Double> distances = new ArrayList<>();
 
         for(int i = 0; i < wayPoints.size(); i++) {
             distances.add(e.getCurrentPosition().distance(wayPoints.get(i)));
         }
-        ArrayList<Double> probabilities = new ArrayList<Double>();
+        ArrayList<Double> probabilities = new ArrayList<>();
         int maxProbIndex = 0;
         for(int i = 0; i < wayPoints.size(); i++) {
             double p = -1;
@@ -93,21 +93,21 @@ public class SLAW extends MobilityModel{
                     }
                 }
                 p /= sum;
-                System.out.println("Prawdopodobieństwo p "+p);
+//                System.out.println("Prawdopodobieństwo p "+p);
             }
             probabilities.add(p);
             if(p > probabilities.get(maxProbIndex)) {
                 maxProbIndex = i;
             }
         }
-        System.out.println("MaxProbIndex -> "+maxProbIndex);
+//        System.out.println("MaxProbIndex -> "+maxProbIndex);
         e.setNextStep(new Step(time+rand.nextDouble(), wayPoints.get(maxProbIndex).getX(), wayPoints.get(maxProbIndex).getY()));
 
     }
 
     private void generateWaypoints() {
-        wayPoints = new LinkedList<Position>();
-        LinkedList<Position> temp = new LinkedList<Position>();
+        wayPoints = new LinkedList<>();
+        LinkedList<Position> temp = new LinkedList<>();
         for(int i = 0; i < 100; i++) {
             for(int j = 0; j < 100; j++) {
                 temp.add(new Position(i, j));
@@ -118,12 +118,12 @@ public class SLAW extends MobilityModel{
             wayPoints.add(temp.get(index));
             temp.remove(index);
         }
-        System.out.println("generate waypoints -> "+wayPoints);
+//        System.out.println("generate waypoints -> "+wayPoints);
     }
 
     private Entity createEntity() {
         int index = rand.nextInt(wayPoints.size());
-        System.out.println("create Entity -> "+index);
+//        System.out.println("create Entity -> "+index);
         return new Entity(wayPoints.get(index).getX(), wayPoints.get(index).getY());
     }
 
