@@ -1,8 +1,6 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import mobilitymodels.Window;
 
@@ -11,7 +9,7 @@ import mobilitymodels.Window;
  */
 public abstract class MobilityModel extends Thread {
     protected Window parent;
-    protected List<Entity> entities;
+    protected ArrayList<Entity> entities;
     protected double time;
     private int dt;
     protected int entitiesCount;
@@ -28,7 +26,7 @@ public abstract class MobilityModel extends Thread {
         dt = 100;
         this.entitiesCount = entitiesCount;
         
-        entities = Collections.synchronizedList(new ArrayList<Entity>());
+        entities = new ArrayList<>();
         Random rand = new Random();
         
         for(int i=0; i<entitiesCount; i++) {
@@ -139,7 +137,7 @@ public abstract class MobilityModel extends Thread {
      * 
      * @return the ArrayList of Entity objects
      */
-    public List<Entity> getEntities() {
+    public ArrayList<Entity> getEntities() {
         return entities;
     }
 
