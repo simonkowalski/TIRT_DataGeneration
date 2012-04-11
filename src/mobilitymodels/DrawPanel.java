@@ -40,7 +40,7 @@ public class DrawPanel extends JPanel {
         models = new MobilityModel[3];
         models[Window.RANDOM_WALK] = new RandomWalk(parent, 8);
         models[Window.LEVY_WALK] = new LevyWalk(parent, 8);
-        models[Window.SLAW] = new RandomWalk(parent, 8);
+        models[Window.SLAW] = new SLAW(parent, 8);
         
         selected = Window.RANDOM_WALK;
         

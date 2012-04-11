@@ -17,6 +17,22 @@ public class Position {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object p) {
+
+        Position pos = (Position) p;
+        return (int)pos.getX() == (int)getX() && (int)pos.getY() == (int)getY();
+    }
+
+    public double distance(Position p) {
+        return Math.sqrt(Math.pow((getX() - p.getX()),2) + Math.pow((getY() - p.getY()),2));
+    }
+
+    @Override
+    public String toString() {
+        return "("+getX()+" ,"+getY()+")";
+    }
+
     /**
      * @return the x
      */

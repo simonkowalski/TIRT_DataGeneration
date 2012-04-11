@@ -20,9 +20,9 @@ public class Entity {
      */
     public Entity(double startX, double startY) {
         currentPosition = new Position(startX, startY);
-        walkedPath = new LinkedList<>();
+        walkedPath = new LinkedList<Position>();
         walkedPath.add(currentPosition);
-        previousSteps = new LinkedList<>();
+        previousSteps = new LinkedList<Step>();
         previousSteps.add(new Step(0, startX, startY));
     }
     

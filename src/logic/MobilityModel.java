@@ -14,7 +14,7 @@ public abstract class MobilityModel extends Thread {
     protected List<Entity> entities;
     protected double time;
     private int dt;
-    private int entitiesCount;
+    protected int entitiesCount;
     protected boolean paused;
     
     /**
@@ -79,7 +79,7 @@ public abstract class MobilityModel extends Thread {
         pauseModel();
         Random rand = new Random();
         time = 0;
-        entities = new ArrayList<>();
+        entities = new ArrayList<Entity>();
         
         for(int i=0; i<entitiesCount; i++) {
             Entity e = new Entity(rand.nextDouble()*100, rand.nextDouble()*100);
