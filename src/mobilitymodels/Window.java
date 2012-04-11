@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import logic.ExportHandler;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Window extends JFrame {
     private JButton startStopButton;
     private JSlider speedSlider;
     private JLabel entitiesCounter;
+    private ExportHandler exh;
 
     public Window() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +34,7 @@ public class Window extends JFrame {
         setTitle("TIRT - mobility models visualisation");
         setResizable(false);
         setAlwaysOnTop(true);
+        exh = new ExportHandler(this);
 
         leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(150, getHeight()));
@@ -195,6 +198,20 @@ public class Window extends JFrame {
             m.start();
             m.pauseModel();
         }
+        
+        JButton export = new JButton("Export");
+        export.setPreferredSize(new Dimension(90, 20));
+        leftPanel.add(export);
+        export.addActionListener(new ActionListener() {
+           
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                boolean result = exh.export(getCurrentModel());
+                if(result) {
+                    startStopButton.setText("Start");
+                }
+            }
+        });
     }
 
     private MobilityModel getCurrentModel() {
