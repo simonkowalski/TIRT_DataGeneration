@@ -76,7 +76,8 @@ public class DrawPanel extends JPanel {
                 while(iter.hasNext()) {
                     Position p2 = iter.next();
                     
-                    g2D.drawLine((int) p1.getX()*5, (int) p1.getY()*5, (int) p2.getX()*5, (int) p2.getY()*5);
+                    if(getCurrentModel().needLines())
+                        g2D.drawLine((int) p1.getX()*5, (int) p1.getY()*5, (int) p2.getX()*5, (int) p2.getY()*5);
                     g2D.drawRect((int) p2.getX()*5 - 1, (int) p2.getY()*5 - 1, 2, 2);
                     p1 = p2;
                 }

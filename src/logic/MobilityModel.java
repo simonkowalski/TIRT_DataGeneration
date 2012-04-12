@@ -154,4 +154,8 @@ public abstract class MobilityModel extends Thread {
     public double getTime() {
         return time;
     }
+    
+    public boolean needLines(){
+        return true;
+    }
 }

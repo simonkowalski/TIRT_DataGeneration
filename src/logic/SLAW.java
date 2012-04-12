@@ -22,52 +22,49 @@ public class SLAW extends MobilityModel{
     private double alpha;
     public SLAW(Window window, int entitiesCount) {
         super(window, entitiesCount);
-        entities = new ArrayList<>();
+//        entities = new ArrayList<>();
         rand = new Random();
         generateWaypoints();
 
-        for(int i=0; i<entitiesCount; i++) {
-            entities.add(createEntity());
-        }
-        alpha = 0.3;
+//        for(int i=0; i<entitiesCount; i++) {
+//            entities.add(createEntity());
+//        }
+        alpha = 1;
     }
 
-        /**
-     * Resets the model.
-     */
-    @Override
-    public void clear() {
-        pauseModel();
-        Random rand = new Random();
-        time = 0;
-        entities = new ArrayList<>();
+//    @Override
+//    public void clear() {
+//        pauseModel();
+//        Random rand = new Random();
+//        time = 0;
+//        entities = new ArrayList<>();
+//
+//        for(int i=0; i<entitiesCount; i++) {
+//            Entity e = createEntity();
+//            calculateNextStep(e);
+//            entities.add(e);
+//        }
+//
+//    }
 
-        for(int i=0; i<entitiesCount; i++) {
-            Entity e = createEntity();
-            calculateNextStep(e);
-            entities.add(e);
-        }
-
-    }
-
-    @Override
-    public void setEntitiesCount(int entitiesCount) {
-        if(entitiesCount > entities.size()) {
-            Random rand = new Random();
-            int entitiesToAdd = entitiesCount - entities.size();
-
-            for(int i=0; i<entitiesToAdd; i++) {
-                entities.add(createEntity());
-            }
-        } else if(entitiesCount < entities.size()) {
-            int entitiesToDel = entities.size() - entitiesCount;
-
-            for(int i=0; i<entitiesToDel; i++) {
-                entities.remove(entities.size()-1);
-            }
-        }
-        this.entitiesCount = entitiesCount;
-    }
+//    @Override
+//    public void setEntitiesCount(int entitiesCount) {
+//        if(entitiesCount > entities.size()) {
+//            Random rand = new Random();
+//            int entitiesToAdd = entitiesCount - entities.size();
+//
+//            for(int i=0; i<entitiesToAdd; i++) {
+//                entities.add(createEntity());
+//            }
+//        } else if(entitiesCount < entities.size()) {
+//            int entitiesToDel = entities.size() - entitiesCount;
+//
+//            for(int i=0; i<entitiesToDel; i++) {
+//                entities.remove(entities.size()-1);
+//            }
+//        }
+//        this.entitiesCount = entitiesCount;
+//    }
 
     @Override
     public void calculateNextStep(Entity e) {
@@ -84,7 +81,8 @@ public class SLAW extends MobilityModel{
         int maxProbIndex = 0;
         for(int i = 0; i < wayPoints.size(); i++) {
             double p = -1;
-            if(!e.getCurrentPosition().equals(wayPoints.get(i))) {
+            if(!e.getCurrentPosition().equals(wayPoints.get(i)) 
+                    /*&& !e.getWalkedPath().contains(wayPoints.get(i))*/) {
                 p = Math.pow(1/distances.get(i),alpha);
                 double sum = 0;
                 for(int j = 0; j < wayPoints.size(); j++) {
@@ -101,7 +99,22 @@ public class SLAW extends MobilityModel{
             }
         }
 //        System.out.println("MaxProbIndex -> "+maxProbIndex);
-        e.setNextStep(new Step(time+rand.nextDouble(), wayPoints.get(maxProbIndex).getX(), wayPoints.get(maxProbIndex).getY()));
+        double distance = rand.nextGaussian() * e.getCurrentPosition().distance(wayPoints.get(maxProbIndex));
+        int angle = rand.nextInt(360);
+        double currentX = wayPoints.get(maxProbIndex).getX();
+        double currentY = wayPoints.get(maxProbIndex).getY();
+        
+        double theta = Math.toRadians(angle);
+        double newX = currentX + distance*Math.cos(theta);
+        double newY = currentY + distance*Math.sin(theta);
+        
+        if(newX > 100) newX = 100;
+        if(newX < 0) newX = 0;
+        if(newY > 100) newY = 100;
+        if(newY < 0) newY = 0;
+        e.setNextStep(new Step(time+rand.nextDouble(), newX, newY));
+        
+//        e.setNextStep(new Step(time+rand.nextDouble(), wayPoints.get(maxProbIndex).getX(), wayPoints.get(maxProbIndex).getY()));
 
     }
 
@@ -127,4 +140,8 @@ public class SLAW extends MobilityModel{
         return new Entity(wayPoints.get(index).getX(), wayPoints.get(index).getY());
     }
 
+    @Override
+    public boolean needLines(){
+        return true;
+    }
 }
