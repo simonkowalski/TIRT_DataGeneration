@@ -54,7 +54,8 @@ public abstract class MobilityModel extends Thread {
      * Calculates the next steps for all entities.
      */
     private void makeStep() {
-        for(Entity e : entities) {
+        for(int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
             if(e.getNextStep() == null) {
                 calculateNextStep(e);
             }
@@ -77,7 +78,7 @@ public abstract class MobilityModel extends Thread {
         pauseModel();
         Random rand = new Random();
         time = 0;
-        entities = new ArrayList<Entity>();
+        entities = new ArrayList<>();
         
         for(int i=0; i<entitiesCount; i++) {
             Entity e = new Entity(rand.nextDouble()*100, rand.nextDouble()*100);

@@ -67,14 +67,13 @@ public class DrawPanel extends JPanel {
                 g2D.setColor(colors[i%colors.length]);
                 
                 LinkedList<Position> path = entities.get(i).getWalkedPath();
-                ListIterator<Position> iter = path.listIterator();
-                Position p1 = iter.next();
+                Position p1 = path.get(0);
                 
                 g2D.drawRect((int) p1.getX()*5 - 1, (int) p1.getY()*5 - 1, 2, 2);
                 g2D.fillRect((int) p1.getX()*5 - 1, (int) p1.getY()*5 - 1, 2, 2);
                 
-                while(iter.hasNext()) {
-                    Position p2 = iter.next();
+                for(int j = 1; j < path.size(); j++) {
+                    Position p2 = path.get(j);
                     
                     g2D.drawLine((int) p1.getX()*5, (int) p1.getY()*5, (int) p2.getX()*5, (int) p2.getY()*5);
                     g2D.drawRect((int) p2.getX()*5 - 1, (int) p2.getY()*5 - 1, 2, 2);

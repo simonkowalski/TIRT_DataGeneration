@@ -64,6 +64,7 @@ public class Window extends JFrame {
                             default:
                             // Do nothing...
                         }
+                        getCurrentModel().clear();
                         entitiesCounter.setText(Integer.toString(getCurrentModel().getEntities().size()));
                         startStopButton.setText("Start");
                         repaint();
